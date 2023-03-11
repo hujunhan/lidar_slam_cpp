@@ -26,4 +26,4 @@ add_executable(${PROJECT_NAME} ${sources})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 OUTPUT_NAME "dblidr_test")
 
-target_link_libraries(${PROJECT_NAME} dblidar::dblidar cxxopts )
+target_link_libraries(${PROJECT_NAME} dblidar cxxopts )
