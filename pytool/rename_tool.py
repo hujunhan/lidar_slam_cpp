@@ -1,20 +1,21 @@
 import glob
 import os
-## rename files by minus 1 from the file name
-# example: frame_000001.pcd to frame_000000.pcd
-name_list = glob.glob('./data/test_csv/*.pcd')
+## rename files by minus a zero from the file name
+# example: frame_000001.pcd to frame_00001.pcd
+name_list = glob.glob('/home/darkblue/code/oh_my_loam/data/test_csv/*.pcd')
 # sort the list
 name_list.sort()
 for name in name_list:
-    print(name)
     # get the file name
-    file_name = name.split('/')[-1]
-    # get the file number
-    file_num = int(file_name.split('_')[-1].split('.')[0])
-    # minus 1 from the file number
-    new_file_num = file_num - 1
-    # get the new file name
-    new_file_name = f'frame_{new_file_num:06d}.pcd'
+    file_name = os.path.basename(name)
+    # get the file path
+    file_path = os.path.dirname(name)
+    # get the file name without extension
+    file_name_no_ext = os.path.splitext(file_name)[0]
+    # get the file extension
+    file_ext = os.path.splitext(file_name)[1]
+    # get the file name without the first zero
+    file_name_no_zero = file_name_no_ext[0:6] + file_name_no_ext[7:]
+    print(file_name_no_zero)
     # rename the file
-    os.rename(name, './data/test_csv/'+new_file_name)
-    # print(new_file_name)
+    os.rename(name, os.path.join(file_path, file_name_no_zero + file_ext))

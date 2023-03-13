@@ -3,7 +3,7 @@
 import csv
 import numpy as np
 import open3d as o3d
-csv_path = '/Users/hu/Downloads/C16_v4.0.0_2023-03-11-13-02_660Frame.csv'
+csv_path = '/home/darkblue/Downloads/C16_v4.0.0_2023-03-11-13-02_660Frame.csv'
 
 ## Read the first 10 lines
 read_lines = 3
@@ -27,10 +27,11 @@ print(data.shape)
 print(data[:10,0])
 print(data[-10:,0])
 
-point_cloud=data[:,2:5]
+point_cloud=data[:,[2,3,4,7]]
 print(point_cloud.shape)
 
 ## Use open3d to visualize the point cloud
-pcl=o3d.geometry.PointCloud()
-pcl.points=o3d.utility.Vector3dVector(point_cloud)
-o3d.visualization.draw_geometries([pcl])
+pcl=o3d.t.geometry.PointCloud()
+pcl.point.position=o3d.core.Tensor(point_cloud[:,:3])
+pcl.point.intensity=o3d.core.Tensor(point_cloud[:,3].reshape(-1,1))
+# o3d.visualization.draw_geometries([pcl])
