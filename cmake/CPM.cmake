@@ -1,5 +1,6 @@
 set(CPM_DOWNLOAD_VERSION 0.37.0)
 
+set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/../.cache" )
 if(CPM_SOURCE_CACHE)
   set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
 elseif(DEFINED ENV{CPM_SOURCE_CACHE})
@@ -7,7 +8,6 @@ elseif(DEFINED ENV{CPM_SOURCE_CACHE})
 else()
   set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
 endif()
-
 # Expand relative path. This is important if the provided path contains a tilde (~)
 get_filename_component(CPM_DOWNLOAD_LOCATION ${CPM_DOWNLOAD_LOCATION} ABSOLUTE)
 

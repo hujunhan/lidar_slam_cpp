@@ -7,7 +7,7 @@ project(
   dblidar
   VERSION 1.0
   LANGUAGES CXX
-)
+) 
 
 # ---- Include guards ----
 
@@ -25,7 +25,14 @@ include(cmake/CPM.cmake)
 
 # PackageProject.cmake will be used to make our target installable
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
-
+CPMAddPackage(NAME Eigen 
+  VERSION 3.4 
+  URL "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz"
+  DOWNLOAD_ONLY YES)
+if(Eigen_ADDED)
+  add_library(Eigen INTERFACE IMPORTED)
+  target_include_directories(Eigen INTERFACE ${Eigen_SOURCE_DIR})
+endif()
 CPMAddPackage(
   NAME fmt
   GIT_TAG 9.1.0
