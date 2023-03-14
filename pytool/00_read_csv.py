@@ -3,7 +3,7 @@
 import csv
 import numpy as np
 import open3d as o3d
-csv_path = '/home/darkblue/Downloads/C16_v4.0.0_2023-03-11-13-02_660Frame.csv'
+csv_path = '/home/darkblue/Downloads/outdoor.csv'
 
 ## Read the first 10 lines
 read_lines = 3
@@ -19,19 +19,18 @@ for i, line in enumerate(csv.reader(open(csv_path, 'r'))):
 
 row_item_num = len(line)
 
-## Use numpy to read the first 32000 lines (exclude the first line)
-data = np.genfromtxt(csv_path, delimiter=',', skip_header=1+32000*5, max_rows=32000,missing_values=None)
+## use numpy to read the csv file as a buffer
+# every time read 32000 lines
 
-print(data.shape)
+total_frames=2400
+reader=open(csv_path, 'r')
+reader.readline()
+buffer_size=32000
+data=np.empty((buffer_size,row_item_num))
+for i in range(10):
+    print(f'current frame {i}')
+    data=np.genfromtxt(reader, delimiter=',', max_rows=buffer_size,missing_values=None, filling_values=0, usecols=range(0,5))
+    print(np.mean(data[:,0], axis=0))
 
-print(data[:10,0])
-print(data[-10:,0])
 
-point_cloud=data[:,[2,3,4,7]]
-print(point_cloud.shape)
 
-## Use open3d to visualize the point cloud
-pcl=o3d.t.geometry.PointCloud()
-pcl.point.position=o3d.core.Tensor(point_cloud[:,:3])
-pcl.point.intensity=o3d.core.Tensor(point_cloud[:,3].reshape(-1,1))
-# o3d.visualization.draw_geometries([pcl])
