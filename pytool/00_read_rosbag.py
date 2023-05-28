@@ -4,31 +4,29 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-file_path=r'./data/imu.bag'
-# read bag file
-data=bagreader(file_path)
+# READ THE ROSBAG FILE FIRST TIME
+# file_path=r'./data/imu.bag'
+# # read bag file
+# data=bagreader(file_path)
 
-tp_table=data.topic_table
-print(tp_table) 
+# tp_table=data.topic_table
+# print(tp_table)
 
-imu=data.message_by_topic('/auk/fcu/imu')
-df_imu = pd.read_csv(imu)
+# read the imu date to dataframe
+# save to csv file
+# imu=data.message_by_topic('/imus/data_raw')
 
-print(df_imu.head(10))
 
-fig, ax = bagpy.create_fig(10)
-ax[0].scatter(x = 'Time', y = 'orientation.x', data  = df_imu, s= 1, label = 'orientation.x')
-ax[1].scatter(x = 'Time', y = 'orientation.y', data  = df_imu, s= 1, label ='orientation.y')
-ax[2].scatter(x = 'Time', y = 'orientation.z', data  = df_imu, s= 1, label = 'orientation.z')
-ax[3].scatter(x = 'Time', y = 'orientation.w', data  = df_imu, s= 1, label ='orientation.w')
-ax[4].scatter(x = 'Time', y = 'angular_velocity.x', data  = df_imu, s= 1, label = 'angular_velocity.x')
-ax[5].scatter(x = 'Time', y = 'angular_velocity.y', data  = df_imu, s= 1, label = 'angular_velocity.y')
-ax[6].scatter(x = 'Time', y = 'angular_velocity.z', data  = df_imu, s= 1, label = 'angular_velocity.z')
-ax[7].scatter(x = 'Time', y = 'linear_acceleration.x', data  = df_imu, s= 1, label = 'linear_acceleration.x')
-ax[8].scatter(x = 'Time', y = 'linear_acceleration.y', data  = df_imu, s= 1, label = 'linear_acceleration.y')
-ax[9].scatter(x = 'Time', y = 'linear_acceleration.z', data  = df_imu, s= 1, label = 'linear_acceleration.z')
-for axis in ax:
-    axis.legend()
-    axis.set_xlabel('Time')
+csv_file = r"./data/imu/imus-data_raw.csv"
+df_imu = pd.read_csv(csv_file, sep=",", header=0)
 
+acc_x = df_imu["linear_acceleration.x"]
+acc_y = df_imu["linear_acceleration.y"]
+acc_z = df_imu["linear_acceleration.z"]
+ang_x = df_imu["angular_velocity.x"]
+ang_y = df_imu["angular_velocity.y"]
+ang_z = df_imu["angular_velocity.z"]
+
+## plt the downsampled data
+plt.scatter(range(len(acc_x[::100])), acc_x[::100], s=1)
 plt.show()
